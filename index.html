@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .header {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            font-size: 20px;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+        .details-panel, .task-panel, .search-panel {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Search Panel -->
+        <div class="row">
+            <div class="col-12">
+                <div class="header">Search Tasks</div>
+                <div class="row">
+                    <div class="col-6">
+                        <form id="searchFormLeft">
+                            <div class="row align-items-center mb-3">
+                                <div class="col-md-3">
+                                    <label for="searchTaskInput" class="form-label">Task:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="searchTaskInput" placeholder="Enter task">
+                                </div>
+                                <div class="col-md-auto">
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" class="form-check-input" id="searchStateCheck">
+                                        <label class="form-check-label" for="searchStateCheck">DONE</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="searchDueDateInput" class="form-label">Due to:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" class="form-control" id="searchDueDateInput" style="width: auto;">
+                                </div>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-auto">
+                                    <div class="form-check mb-6">
+                                        <input type="checkbox" class="form-check-input" id="searchStateCheck2">
+                                        <label class="form-check-label" for="searchStateCheck2">NOT DONE</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-6">
+                        <form id="searchFormRight">
+                            <div class="row align-items-center mb-3">
+                                <div class="col-md-2">
+                                    <label for="searchFocusInput" class="form-label">Focus:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-control" id="searchFocusInput">
+                                        <option value="">Select focus</option>
+                                        <option value="N">No</option>
+                                        <option value="Y">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="searchImportanceInput" class="form-label">Importance:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-control" id="searchImportanceInput">
+                                        <option value="">Select importance</option>
+                                        <option value="very low">Very Low</option>
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                        <option value="very high">Very High</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="searchTimeInput" class="form-label">Time:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-control" id="searchTimeInput">
+                                        <option value="">Select time</option>
+                                        <option value="5 minutes">5 Minutes</option>
+                                        <option value="10 minutes">10 Minutes</option>
+                                        <option value="30 minutes">30 Minutes</option>
+                                        <option value="1 hour">1 Hour</option>
+                                        <option value="2 hours">2 Hours</option>
+                                        <option value="3 hours">3 Hours</option>
+                                        <option value="4 hours">4 Hours</option>
+                                        <option value="6 hours">6 Hours</option>
+                                        <option value="8 hours">8 Hours</option>
+                                        <option value="10 hours">10 Hours</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="searchEnergyInput" class="form-label">Energy:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-control" id="searchEnergyInput">
+                                        <option value="">Select energy</option>
+                                        <option value="none">None</option>
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="search()">Search</button>
+                <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear Search</button>
+            </div>
+        </div>
+
+        <!-- Task Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="header">Tasks</div>
+                <table class="table table-hover" id="taskTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">State</th>
+                            <th scope="col">Focus</th>
+                            <th scope="col">Task</th>
+                            <th scope="col">Due to</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Energy</th>
+                            <th scope="col">Importance</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>+</td>
+                            <td>Y</td>
+                            <td>Prepare for URO exam</td>
+                            <td>2024-06-06</td>
+                            <td>30 minutes</td>
+                            <td>high</td>
+                            <td>very high</td>
+                            <td>
+                                <button class="btn btn-primary" onclick="selectTask(this)">Select</button>
+                                <button class="btn btn-danger" onclick="deleteTask(this)">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>N</td>
+                            <td>Pass URO exam</td>
+                            <td>2024-06-09</td>
+                            <td>2 hours</td>
+                            <td>high</td>
+                            <td>very high</td>
+                            <td>
+                                <button class="btn btn-primary" onclick="selectTask(this)">Select</button>
+                                <button class="btn btn-danger" onclick="deleteTask(this)">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>Y</td>
+                            <td>Prepare for URO exam</td>
+                            <td>2024-06-06</td>
+                            <td>10 minutes</td>
+                            <td>high</td>
+                            <td>very high</td>
+                            <td>
+                                <button class="btn btn-primary" onclick="selectTask(this)">Select</button>
+                                <button class="btn btn-danger" onclick="deleteTask(this)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Task to Complete and Additional Details -->
+        <div class="row">
+            <div class="col-6">
+                <div class="header">Task to Complete</div>
+                <form id="taskForm">
+                    <div class="row align-items-center mb-3">
+                        <div class="col-md-3">
+                            <label for="taskInput" class="form-label">Task:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="taskInput" placeholder="Enter task">
+                        </div>
+                        <div class="col-md-auto">
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" id="stateCheck">
+                                <label class="form-check-label" for="stateCheck">STATE</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <label for="dueDateInput" class="form-label">Due to:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" class="form-control" id="dueDateInput" style="width: auto;">
+                        </div>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary" onclick="addTask()">New Task</button>
+                <button type="button" class="btn btn-secondary" onclick="saveChanges()">Save Changes</button>
+            </div>
+            <div class="col-6">
+                <div class="header">Additional Details</div>
+                <form id="additionalDetailsForm">
+                    <div class="row align-items-center mb-3">
+                        <div class="col-md-2">
+                            <label for="focusInput" class="form-label">Focus:</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" id="focusInput">
+                                <option value="">Select focus</option>
+                                <option value="N">No</option>
+                                <option value="Y">Yes</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="importanceInput" class="form-label">Importance:</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" id="importanceInput">
+                                <option value="">Select importance</option>
+                                <option value="very low">Very Low</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                                <option value="very high">Very High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <label for="timeInput" class="form-label">Time:</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" id="timeInput">
+                                <option value="">Select time</option>
+                                <option value="5 minutes">5 Minutes</option>
+                                <option value="10 minutes">10 Minutes</option>
+                                <option value="30 minutes">30 Minutes</option>
+                                <option value="1 hour">1 Hour</option>
+                                <option value="2 hours">2 Hours</option>
+                                <option value="3 hours">3 Hours</option>
+                                <option value="4 hours">4 Hours</option>
+                                <option value="6 hours">6 Hours</option>
+                                <option value="8 hours">8 Hours</option>
+                                <option value="10 hours">10 Hours</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="energyInput" class="form-label">Energy:</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" id="energyInput">
+                                <option value="">Select energy</option>
+                                <option value="none">None</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Author Modal and Button -->
+        <div class="row d-flex justify-content-center mt-5">
+            <div class="col-6 d-flex justify-content-center">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authorModal">Author</button>
+            </div>
+        </div>
+
+        <!-- Modal for author information -->
+        <div class="modal fade" id="authorModal" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="authorModalLabel">About the Author</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Nav tabs for information and photo -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#author-info" type="button" role="tab" aria-selected="true">Information</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#author-photo" type="button" role="tab" aria-selected="false">Photo</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="author-info" role="tabpanel">
+                                <p>Demid Ostiakov OST0059 - ToDo App</p>
+                            </div>
+                            <div class="tab-pane fade" id="author-photo" role="tabpanel">
+                                <img src="photo_2024-05-09_15-53-04.jpg" alt="Author Photo" class="img-fluid mt-3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    let selectedRowIndex = null;
+
+function addTask() {
+    const taskInput = document.getElementById("taskInput").value;
+    const dueDateInput = document.getElementById("dueDateInput").value;
+    const timeInput = document.getElementById("timeInput").value;
+    const energyInput = document.getElementById("energyInput").value;
+    const importanceInput = document.getElementById("importanceInput").value;
+    const focusInput = document.getElementById("focusInput").value;
+    const stateCheck = document.getElementById("stateCheck").checked ? "+" : "-";
+
+    if (!taskInput || !dueDateInput) {
+        alert("Task name and due date must be provided.");
+        return;
+    }
+
+    const table = document.getElementById("taskTable").getElementsByTagName("tbody")[0];
+    const newRow = table.insertRow();
+    newRow.insertCell(0).innerHTML = stateCheck;
+    newRow.insertCell(1).innerHTML = focusInput;
+    newRow.insertCell(2).innerHTML = taskInput;
+    newRow.insertCell(3).innerHTML = dueDateInput;
+    newRow.insertCell(4).innerHTML = timeInput;
+    newRow.insertCell(5).innerHTML = energyInput;
+    newRow.insertCell(6).innerHTML = importanceInput;
+    newRow.insertCell(7).innerHTML = `
+        <button class="btn btn-primary" onclick="selectTask(this)">Select</button>
+        <button class="btn btn-danger" onclick="deleteTask(this)">Delete</button>
+    `;
+
+    document.getElementById("taskForm").reset();
+}
+
+function saveChanges() {
+    if (selectedRowIndex === null) {
+        alert("No task selected for update.");
+        return;
+    }
+
+    const taskInput = document.getElementById("taskInput").value;
+    const dueDateInput = document.getElementById("dueDateInput").value;
+    const timeInput = document.getElementById("timeInput").value;
+    const energyInput = document.getElementById("energyInput").value;
+    const importanceInput = document.getElementById("importanceInput").value;
+    const focusInput = document.getElementById("focusInput").value;
+    const stateCheck = document.getElementById("stateCheck").checked ? "+" : "-";
+
+    if (!taskInput || !dueDateInput) {
+        alert("Task name and due date must be provided.");
+        return;
+    }
+
+    const table = document.getElementById("taskTable").getElementsByTagName("tbody")[0];
+    const selectedRow = table.rows[selectedRowIndex];
+
+    selectedRow.cells[0].innerHTML = stateCheck;
+    selectedRow.cells[1].innerHTML = focusInput;
+    selectedRow.cells[2].innerHTML = taskInput;
+    selectedRow.cells[3].innerHTML = dueDateInput;
+    selectedRow.cells[4].innerHTML = timeInput;
+    selectedRow.cells[5].innerHTML = energyInput;
+    selectedRow.cells[6].innerHTML = importanceInput;
+
+    document.getElementById("taskForm").reset();
+    selectedRowIndex = null;
+}
+
+function selectTask(button) {
+    const row = button.parentNode.parentNode;
+    selectedRowIndex = row.rowIndex - 1;
+
+    document.getElementById("taskInput").value = row.cells[2].innerHTML;
+    document.getElementById("dueDateInput").value = row.cells[3].innerHTML;
+    document.getElementById("timeInput").value = row.cells[4].innerHTML;
+    document.getElementById("energyInput").value = row.cells[5].innerHTML;
+    document.getElementById("importanceInput").value = row.cells[6].innerHTML;
+    document.getElementById("focusInput").value = row.cells[1].innerHTML;
+    document.getElementById("stateCheck").checked = row.cells[0].innerHTML === "+";
+}
+
+function deleteTask(button) {
+    const row = button.parentNode.parentNode;
+    const table = row.parentNode;
+    table.removeChild(row);
+}
+
+function clearSearch() {
+    document.getElementById("searchFormLeft").reset();
+    document.getElementById("searchFormRight").reset();
+    const table = document.getElementById("taskTable").getElementsByTagName("tbody")[0];
+    for (let i = 0; i < table.rows.length; i++) {
+        table.rows[i].style.display = "";
+    }
+}
+
+function search() {
+    const searchTaskInput = document.getElementById("searchTaskInput").value.toLowerCase();
+    const searchDueDateInput = document.getElementById("searchDueDateInput").value;
+    const searchFocusInput = document.getElementById("searchFocusInput").value;
+    const searchImportanceInput = document.getElementById("searchImportanceInput").value;
+    const searchTimeInput = document.getElementById("searchTimeInput").value;
+    const searchEnergyInput = document.getElementById("searchEnergyInput").value;
+    const searchStateCheck = document.getElementById("searchStateCheck").checked;
+    const searchStateCheck2 = document.getElementById("searchStateCheck2").checked;
+
+    const table = document.getElementById("taskTable").getElementsByTagName("tbody")[0];
+    for (let i = 0; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        const state = row.cells[0].innerHTML;
+        const focus = row.cells[1].innerHTML;
+        const task = row.cells[2].innerHTML.toLowerCase();
+        const dueTo = row.cells[3].innerHTML;
+        const time = row.cells[4].innerHTML;
+        const energy = row.cells[5].innerHTML;
+        const importance = row.cells[6].innerHTML;
+
+        let match = true;
+        match &= (!searchTaskInput || task.includes(searchTaskInput));
+        match &= (!searchDueDateInput || dueTo === searchDueDateInput);
+        match &= (!searchFocusInput || focus === searchFocusInput);
+        match &= (!searchImportanceInput || importance === searchImportanceInput);
+        match &= (!searchTimeInput || time === searchTimeInput);
+        match &= (!searchEnergyInput || energy === searchEnergyInput);
+        match &= (!searchStateCheck || state === "+");
+        match &= (!searchStateCheck2 || state === "-");
+
+        row.style.display = match ? "" : "none";
+    }
+}
+
+</script>
+</body>
+</html>
